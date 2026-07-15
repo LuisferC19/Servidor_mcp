@@ -1,0 +1,94 @@
+#Instrucciones para un servidor MCP
+
+##Python --version
+Muestra la version actual de python
+
+## python -m venv mi_mcp_server
+Crear un entorno virtual
+
+## Set.ExecutionPolicy Bypass -Scope Process
+Desbloquea la ejecucion de script de terceros
+
+## .\mi_mcp_server\Scripts\Activate.ps1
+Comando para activar el entorno virtual 
+
+## deactivate
+Concluye y cierra el entorno virtual 
+
+## python -m pip install --upgrade pip
+Actualiza PIP
+
+## pip install fastmcp
+ Instala FastMCP
+
+ ## pip install uv
+ UV es la alternativa mejorada del entorno virtual tradicional
+
+ ## pip install python-dotenv
+ dotenv es una libreria que sirve para cargar variables
+
+ ## pip install openai
+ Paqute utilizado para conectarnos a ChatGPT
+
+ ## pip install anthropic
+ Instala el cliente de Antripic
+
+ ## python server.py
+ ## fastmcp run server.py
+ Ejecuta y deja corriendo el servidor de MCP.  Es justo cuando ejecutamos el archivo server.py
+
+
+
+
+
+ from fastmcp import FastMCP
+
+mcp = FastMCP("Servidor Demo")
+
+
+@mcp.tool
+def suma(a: int, b: int) -> int:
+    """Suma dos números"""
+    return a + b
+
+
+@mcp.tool  # Colorin que es una etiqueta que indica que la función es una herramienta del servidor que se puede consumir
+def saludar(nombre: str) -> str:
+    return f"Hola {nombre}"
+
+
+@mcp.tool
+def crear_archivo(nombre_archivo: str, contenido: str) -> str:
+    """Crea un archivo de texto con el contenido especificado."""
+    try:
+        with open(nombre_archivo, "w", encoding="utf-8") as archivo:
+            archivo.write(contenido)
+        return f"Archivo '{nombre_archivo}' creado correctamente"
+
+    except Exception as e:
+        return f"Error: {str(e)}"
+
+
+if __name__ == "__main__":
+    mcp.run()
+
+
+    @mcp.tool
+def crear_txt(nombre: str, apellido: str) -> str:
+    """Crea un archivo de texto con el nombre '{nombre}_{apellido}.txt'.
+
+    El contenido por defecto del archivo será:
+    Nombre: {nombre}
+    Apellido: {apellido}
+
+    Devuelve un mensaje indicando éxito o el error ocurrido.
+    """
+    # Construir nombre de archivo 
+    nombre_archivo = f"{nombre}_{apellido}.txt"
+    contenido = f"Nombre: {nombre}\nApellido: {apellido}\n"
+    try:
+        with open(nombre_archivo, "w", encoding="utf-8") as ar:
+            ar.write(contenido)
+        return f"Archivo '{nombre_archivo}' creado correctamente"
+    except Exception as e:
+        return f"Error: {str(e)}"

@@ -1,0 +1,4 @@
+.env
+mi_mcp_server/
+__pycache__/
+*.pyc
